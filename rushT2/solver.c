@@ -12,7 +12,7 @@ int solve(int **input_array, int row, int col, int *views)
         return (solve(input_array, row, col + 1, views));
     while (i <= 4)
     {
-        if (is_valid(input_array, row, col, i, views))
+        if (is_valid(input_array, row, col, i))
         {
             input_array[row][col] = i;
             if (solve(input_array, row, col + 1, views))

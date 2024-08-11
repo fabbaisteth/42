@@ -19,7 +19,7 @@ int check_view(int *line, int expected_view)
     return (count == expected_view);
 }
 
-int is_valid(int **numbers_array, int row, int col, int num, int *views)
+int is_valid(int **numbers_array, int row, int col, int num)
 {
     int i;
 

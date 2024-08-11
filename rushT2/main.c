@@ -4,13 +4,13 @@
 #include "utils.h"
 #include <stdlib.h>
 
-int main()
+int main(int argc, char **argv)
 {
     int **numbers_array;
     int *views;
     int row = 0, col = 0;
 
-    views = input("4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 2");
+    views = input(argv[1]);
     numbers_array = allocate_array();
     if (!numbers_array)
         return 1;
