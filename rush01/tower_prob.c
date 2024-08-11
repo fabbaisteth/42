@@ -1,21 +1,7 @@
-#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <string.h>
-
-void ptch(char c)
-{
-    write(1, &c, 1);
-}
-
-void putstr(char *str)
-{
-    while (*str)
-    {
-        ptch(*str);
-        str++;
-    }
-}
+#include "print_solution.h"
+#include "input.h"
 
 int **allocate_array()
 {
@@ -43,49 +29,6 @@ int **allocate_array()
     return numbers_array;
 }
 
-int *input(char *input_string)
-{
-    char *err = "Error";
-    int num;
-    int k = 0;
-    int *views;
-
-    views = (int *)malloc(16 * sizeof(int));
-    if (!views)
-        return 0;
-    // Parse the input string
-    while (*input_string)
-    {
-        if (*input_string >= '1' && *input_string <= '4')
-        {
-            num = *input_string - '0';
-            // printf("%d\n", num);
-            if (k < 16) // First 16 numbers are for views
-            {
-                views[k] = num;
-                printf("%d\n", views[k]);
-                k++;
-            }
-        }
-        else if (*input_string != ' ')
-        {
-            putstr(err);
-            free(views);
-            return 0;
-        }
-        input_string++;
-    }
-
-    // Check if exactly 16 numbers were parsed
-    if (k != 16)
-    {
-        putstr(err);
-        free(views);
-        return 0;
-    }
-    return views;
-}
-
 int check_view(int *line, int expected_view)
 {
     int max_seen = 0;
@@ -108,8 +51,6 @@ int check_view(int *line, int expected_view)
 int is_valid(int **numbers_array, int row, int col, int num, int *views)
 {
     int i;
-    int left_view, right_view, up_view, down_view;
-
     // Check for duplicate numbers in the same row and column
     i = 0;
     while (i < 4)
@@ -178,20 +119,6 @@ int solve(int **input_array, int row, int col, int *views)
     return (0);
 }
 
-void print_solution(int **solution)
-{
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            ptch(solution[i][j] + '0');
-            if (j < 3)
-                ptch(' ');
-        }
-        ptch('\n');
-    }
-}
-
 int main()
 {
     int **numbers_array;
@@ -199,7 +126,7 @@ int main()
     int row = 0,
         col = 0;
 
-    views = input("4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 2");
+    views = input("1 2 3 4 2 2 2 1 1 2 2 2 4 3 2 1");
     numbers_array = allocate_array();
     if (!numbers_array)
         return 1;
