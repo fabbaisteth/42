@@ -15,23 +15,45 @@ int *allocate_views()
     return views;
 }
 
-int parse_input(char *input_string, int *views)
+int validate_input_sequence(char *input_string)
 {
-    int k = 0;
-    while (*input_string && k < 16)
+    int last_was_space = 0;
+
+    while (*input_string)
     {
         if (*input_string >= '1' && *input_string <= '4')
-            views[k++] = *input_string - '0';
-        else if (*input_string != ' ')
+            last_was_space = 0;
+        else if (*input_string == ' ')
+            last_was_space = 1;
+        else
         {
+            if (last_was_space)
+            {
+                putstr("Error");
+                return 0;
+            }
             putstr("Error");
             return 0;
         }
         input_string++;
     }
-    return k;
+    return 1;
 }
 
+int parse_input(char *input_string, int *views)
+{
+    int k = 0;
+
+    while (*input_string && k < 16)
+    {
+        if (*input_string >= '1' && *input_string <= '4')
+        {
+            views[k++] = *input_string - '0';
+        }
+        input_string++;
+    }
+    return k;
+}
 
 int validate_input(int k, int *views)
 {
@@ -46,6 +68,9 @@ int validate_input(int k, int *views)
 
 int *input(char *input_string)
 {
+    if (!validate_input_sequence(input_string))
+        return 0;
+
     int *views = allocate_views();
     if (!views)
         return 0;
@@ -56,21 +81,5 @@ int *input(char *input_string)
         free(views);
         return 0;
     }
-    return 1;
-}
-
-int *input(char *input_string)
-{
-    int *views = allocate_views();
-    if (!views)
-        return NULL;
-
-    int k = parse_input(input_string, views);
-    if (!k || !validate_views(k))
-    {
-        free(views);
-        return NULL;
-    }
-
     return views;
 }
