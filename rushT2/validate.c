@@ -41,7 +41,7 @@ int validate_solution(int **numbers_array, int *views)
     int temp_col[4];
 
     // Check all rows
-    for (i = 0; i < 4; i++)
+    while (i < 4)
     {
         if (!check_view(numbers_array[i], views[8 + i])) // Left view
             return 0;
@@ -64,6 +64,7 @@ int validate_solution(int **numbers_array, int *views)
         }
         if (!check_view(temp_col, views[4 + i])) // Down view
             return 0;
+        i++;
     }
     return 1;
 }
