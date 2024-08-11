@@ -34,45 +34,53 @@ int is_valid(int **numbers_array, int row, int col, int num, int *views)
     return 1;
 }
 
-int check_all_views(int *row, int *col, int *views, int i)
-{
-    if (!check_view(row, views[12 + i])) // Right view
-        return 0;
-    if (!check_view(col, views[i])) // Up view
-        return 0;
-
-    for (int j = 0; j < 4; j++)
-        col[j] = row[3 - j];
-
-    if (!check_view(col, views[4 + i])) // Down view
-        return 0;
-
-    return 1;
-}
-
-int validate_row_col(int **numbers_array, int *views, int i)
+int check_row(int *row, int left_view, int right_view)
 {
     int temp_row[4];
-    int temp_col[4];
-
-    for (int j = 0; j < 4; j++)
+    int j = 0;
+    while (j < 4)
     {
-        temp_row[j] = numbers_array[i][3 - j];
-        temp_col[j] = numbers_array[j][i];
+        temp_row[j] = row[3 - j];
+        j++;
+    }
+    return check_view(row, left_view) && check_view(temp_row, right_view);
+}
+
+int check_column(int **numbers_array, int col_index, int up_view, int down_view)
+{
+    int temp_col[4];
+    int j = 0;
+    while (j < 4)
+    {
+        temp_col[j] = numbers_array[j][col_index];
+        j++;
     }
 
-    if (!check_view(numbers_array[i], views[8 + i])) // Left view
+    if (!check_view(temp_col, up_view))
         return 0;
 
-    return check_all_views(temp_row, temp_col, views, i);
+    j = 0;
+    while (j < 4)
+    {
+        temp_col[j] = numbers_array[3 - j][col_index];
+        j++;
+    }
+
+    return check_view(temp_col, down_view);
 }
 
 int validate_solution(int **numbers_array, int *views)
 {
-    for (int i = 0; i < 4; i++)
+    int i = 0;
+    while (i < 4)
     {
-        if (!validate_row_col(numbers_array, views, i))
+        if (!check_row(numbers_array[i], views[8 + i], views[12 + i]))
             return 0;
+
+        if (!check_column(numbers_array, i, views[i], views[4 + i]))
+            return 0;
+
+        i++;
     }
     return 1;
 }

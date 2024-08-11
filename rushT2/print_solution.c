@@ -3,14 +3,18 @@
 
 void print_solution(int **solution)
 {
-    for (int i = 0; i < 4; i++)
+    int i = 0;
+    while (i < 4)
     {
-        for (int j = 0; j < 4; j++)
+        int j = 0;
+        while (j < 4)
         {
             ptch(solution[i][j] + '0');
             if (j < 3)
                 ptch(' ');
+            j++;
         }
         ptch('\n');
+        i++;
     }
 }
