@@ -32,6 +32,7 @@ int parse_input(char *input_string, int *views)
     return k;
 }
 
+
 int validate_input(int k, int *views)
 {
     if (k != 16)
@@ -55,5 +56,21 @@ int *input(char *input_string)
         free(views);
         return 0;
     }
+    return 1;
+}
+
+int *input(char *input_string)
+{
+    int *views = allocate_views();
+    if (!views)
+        return NULL;
+
+    int k = parse_input(input_string, views);
+    if (!k || !validate_views(k))
+    {
+        free(views);
+        return NULL;
+    }
+
     return views;
 }
